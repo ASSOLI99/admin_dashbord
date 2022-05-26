@@ -1,9 +1,29 @@
-<!-- <?php require_once "database/database.php"?> -->
-<!-- <?php 
-$statement=$pdo->prepare("SELECT * FROM users");
-$statement->execute();
-$users=$statement->fetchAll(PDO::FETCH_ASSOC);
-?> -->
+ <?php require_once "database/database.php";
+    session_start();
+    if(!isset($_SESSION['name']) || !isset($_SESSION['type']) || !isset($_SESSION['image'])){
+        header("Location: ./login/index.php");
+    }
+ // visitors link
+$statementUnique=$pdo->prepare("SELECT * FROM unique_visitors");
+$statementUnique->execute();
+$webVisits=$statementUnique->fetchAll(PDO::FETCH_ASSOC);
+ // users link
+$statementUsers=$pdo->prepare("SELECT * FROM users");
+$statementUsers->execute();
+$users=$statementUsers->fetchAll(PDO::FETCH_ASSOC);
+ // Products link
+$statementProducts=$pdo->prepare("SELECT * FROM products");
+$statementProducts->execute();
+$products=$statementProducts->fetchAll(PDO::FETCH_ASSOC);
+ // Categories link
+$statementCategories=$pdo->prepare("SELECT * FROM categories");
+$statementCategories->execute();
+$categories=$statementCategories->fetchAll(PDO::FETCH_ASSOC);
+ // admins link
+ $statementAdmins=$pdo->prepare("SELECT * FROM categories");
+ $statementAdmins->execute();
+ $admins=$statementAdmins->fetchAll(PDO::FETCH_ASSOC);
+?> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,6 +95,13 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                     <span>Categories</span>
                 </a>
             </li>
+            <li
+                class="sidebar-item">
+                <a href="./login/logout.php" class='sidebar-link'>
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Log Out</span>
+                </a>
+            </li>
             
                
             
@@ -109,7 +136,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="col-md-8">
                                     <h6 class="text-muted font-semibold">Pages Visits</h6>
-                                    <h6 class="font-extrabold mb-0">112.000</h6>
+                                    <h6 class="font-extrabold mb-0"><?php echo count($webVisits) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +153,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="col-md-8">
                                     <h6 class="text-muted font-semibold">Subscribers</h6>
-                                    <h6 class="font-extrabold mb-0">183.000</h6>
+                                    <h6 class="font-extrabold mb-0"><?php echo count($users) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +170,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="col-md-8">
                                     <h6 class="text-muted font-semibold">Products</h6>
-                                    <h6 class="font-extrabold mb-0">80.000</h6>
+                                    <h6 class="font-extrabold mb-0"><?php echo count($products) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -160,13 +187,14 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="col-md-8">
                                     <h6 class="text-muted font-semibold">Types</h6>
-                                    <h6 class="font-extrabold mb-0">112</h6>
+                                    <h6 class="font-extrabold mb-0"><?php echo count($categories) ?></h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- visitors diagram not finished //start-->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -179,6 +207,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
             </div>
+             <!-- visitors diagram not finished //end-->
             <div class="row">
                 <div class="col-12 col-xl-4">
                     <div class="card">
@@ -186,7 +215,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                             <h4>Profile Visit</h4>
                         </div>
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row my-2">
                                 <div class="col-6">
                                     <div class="d-flex align-items-center">
                                         <svg class="bi text-primary" width="32" height="32" fill="blue"
@@ -200,11 +229,11 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="col-6">
                                     <h5 class="mb-0">862</h5>
                                 </div>
-                                <div class="col-12">
+                                <!-- <div class="col-12">
                                     <div id="chart-europe"></div>
-                                </div>
+                                </div> -->
                             </div>
-                            <div class="row">
+                            <div class="row my-2">
                                 <div class="col-6">
                                     <div class="d-flex align-items-center">
                                         <svg class="bi text-success" width="32" height="32" fill="blue"
@@ -218,11 +247,11 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="col-6">
                                     <h5 class="mb-0">375</h5>
                                 </div>
-                                <div class="col-12">
+                                <!-- <div class="col-12">
                                     <div id="chart-america"></div>
-                                </div>
+                                </div> -->
                             </div>
-                            <div class="row">
+                            <div class="row my-2">
                                 <div class="col-6">
                                     <div class="d-flex align-items-center">
                                         <svg class="bi text-danger" width="32" height="32" fill="blue"
@@ -236,9 +265,9 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="col-6">
                                     <h5 class="mb-0">1025</h5>
                                 </div>
-                                <div class="col-12">
+                                <!-- <div class="col-12">
                                     <div id="chart-indonesia"></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -248,6 +277,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                         <div class="card-header">
                             <h4>Latest Comments</h4>
                         </div>
+                        <!-- comments section end -->
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover table-lg">
@@ -258,6 +288,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         <tr>
                                             <td class="col-3">
                                                 <div class="d-flex align-items-center">
@@ -289,6 +320,7 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                                 </table>
                             </div>
                         </div>
+                        <!-- comments section end -->
                     </div>
                 </div>
             </div>
@@ -298,11 +330,11 @@ $users=$statement->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card-body py-4 px-5">
                     <div class="d-flex align-items-center">
                         <div class="avatar avatar-xl">
-                            <img src="assets/images/faces/1.jpg" alt="Face 1">
+                            <img src="<?php echo $_SESSION['image'] ?>" alt="Face 1">
                         </div>
                         <div class="ms-3 name">
-                            <h5 class="font-bold">Abdullah Assoli</h5>
-                            <h6 class="text-muted mb-0">@Assoli</h6>
+                            <h5 class="font-bold"><?php echo $_SESSION['name'] ?></h5>
+                            <h6 class="text-muted mb-0">Type: <?php echo $_SESSION['type'] ?></h6>
                         </div>
                     </div>
                 </div>
